@@ -111,6 +111,3 @@ def infix2postfix(infix:str):
         
 print(infix2postfix('(A+B*)?(C|D)'))
 print(infix2postfix('(02)+|CD'))
-# 
-# stack   : ? ( | 
-# postfix : A B * + C 
