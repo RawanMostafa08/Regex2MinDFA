@@ -1,13 +1,5 @@
 {
-    "startingState": "S6",
-    "S6": {
+    "startingState": "S3",
+    "S3": {
         "isTerminatingState": false,
-        "C": [
-            "S7",
-            "S7"
-        ]
-    },
-    "S7": {
-        "isTerminatingState": true
-    }
-}
+        

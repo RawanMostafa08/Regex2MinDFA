@@ -112,4 +112,4 @@ def infix2postfix(infix:str):
 # print(infix2postfix('(A+B*)?(C|D)'))
 # print(infix2postfix('(02)+|CD'))
 # print(infix2postfix('[a-fA-C]'))
-print(infix2postfix('a+b'))
+print(infix2postfix('[a-f0-9]32'))
