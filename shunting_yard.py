@@ -68,9 +68,10 @@ def preprocessing(infix:str):
     
     infix = infix.replace(' ', '')
     infix = replace_dot(infix)
-    infix = add_concatenation(infix)
     infix = handle_ranges(infix)
     infix = add_ors(infix)
+    infix = add_concatenation(infix)
+    
     return infix
 
 
@@ -108,7 +109,7 @@ def infix2postfix(infix:str):
     postfix = shunting_yard(infix)
     return postfix
 
-        
+# print(infix2postfix('[a-f0-9]32'))
 # print(infix2postfix('(A+B*)?(C|D)'))
 # print(infix2postfix('(02)+|CD'))
 # print(infix2postfix('[a-fA-C]'))
