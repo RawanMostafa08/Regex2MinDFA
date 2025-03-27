@@ -44,8 +44,10 @@ class MinimizedDFA:
         # inital partition TT
         non_accepting = self.__difference(self.dfa.states,self.dfa.accepting) # {A, B, C, D}  non accepting states
         accepting = self.dfa.accepting # {E}  accepting states
-
-        partitions = [non_accepting, accepting] #TTnew =TT = {A, B, C, D} {E}
+        if len(non_accepting)==0:
+            partitions = [accepting]
+        else:
+            partitions = [non_accepting, accepting] #TTnew =TT = {A, B, C, D} {E}
         # partition is a list of lists(groups) 
         changed = True
         while changed:
@@ -80,7 +82,6 @@ class MinimizedDFA:
         for group in partitions:
             from_state = state_map[frozenset(group)]
             minimized_transitions[from_state] = {}
-            
             sample_state = group[0]
 
             for input in self.dfa.alphabets:
@@ -100,15 +101,18 @@ class MinimizedDFA:
                 minimized_transitions[state]["isTerminatingState"] = True
             else:
                 minimized_transitions[state]["isTerminatingState"] = False
+                
         
         # add start state
-        # for group in partitions:
-        #     if self.dfa.start in group:
-        #         print(f"start state{self.dfa.start} at group {group}")
-        #         minimized_transitions["startingState"] = state_map[frozenset(group)]
-        #         break
+        start_state = self.transitions["startingState"]
+        for group in partitions:
+            for state in group:
+                if start_state == state.name:
+                    minimized_transitions["startingState"] = state_map[frozenset(group)]
+                    break
 
-        minimized_transitions["startingState"] = self.transitions["startingState"]
+
+        # minimized_transitions["startingState"] = self.transitions["startingState"]
                     
         self.dfa.states = minimized_states
         self.dfa.accepting = minimized_accepting

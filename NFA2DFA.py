@@ -81,6 +81,11 @@ class DFA:
         start = self.epsilon_closure([nfa.start])
         self.states.append(start)
         self.start = start
+        for s in start:
+            if s == nfa.accepting:
+                self.accepting.append(start)
+                break
+            
         
         transitions ={}
         start_string = " ".join(sorted([s.name for s in self.start]))
@@ -94,7 +99,6 @@ class DFA:
                 if not destinations:
                     continue
                 closure = self.epsilon_closure(destinations)
-
             
                 for s in closure:
                     if s == nfa.accepting:
