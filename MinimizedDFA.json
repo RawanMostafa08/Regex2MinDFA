@@ -1,14 +1,15 @@
 {
-    "S1 S3": {
-        "a": "S1 S2 S3 S4 S5",
+    "S0": {
+        "b": "S2",
+        "a": "S1",
         "isTerminatingState": false
     },
-    "S1 S2 S3 S4 S5": {
-        "a": "S1 S2 S3 S4 S5",
-        "b": "S6",
-        "isTerminatingState": false
+    "S2": {
+        "b": "S2",
+        "isTerminatingState": true
     },
-    "S6": {
+    "S1": {
+        "a": "S1",
         "isTerminatingState": true
     }
 }
