@@ -8,6 +8,7 @@ class MinimizedDFA:
         self.minimized_transitions = {}
         
     def __difference(self, states_a: list[State], states_b: list[State]):
+        
         names_b = {state.name for state in states_b}  
         return [state for state in states_a if state.name not in names_b]  
     
@@ -16,19 +17,19 @@ class MinimizedDFA:
     # Otherwise, split into subgroups where states have identical transition behavior
 
         subgroups = {}  # key: tuple of destination groups, value: list of states
-                        # ex: {(0, 1): [A, B], (1, 0): [C, D]}
+                        # ex: {(0, 1): [A, B], (2, 3): [C, D]}
 
         for state in group:
             destination_groups = []
 
             for input in self.dfa.alphabets:
                 next_state = self.transitions.get(state.name, {}).get(input, None)
-                destination_groups.append(next_state)
                 for i, existing_group in enumerate(partition):
-                    if next_state in existing_group:
-                        destination_groups.append(i)
-                        break
-            
+                    for g in existing_group:
+                        if g.name == next_state:
+                            destination_groups.append(i)
+                            break
+            print("destination_groups",destination_groups)
             
             if tuple(destination_groups) not in subgroups:
                 subgroups[tuple(destination_groups)] = []
