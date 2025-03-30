@@ -26,6 +26,19 @@ def handle_ranges(infix: str):
             preprocessed_infix += char
     return preprocessed_infix
 
+def handle_ranges_neat(infix: str):
+    preprocessed_infix = ''
+    for i,char in enumerate(infix):
+        if char == '-':
+            start_char = infix[i-1]
+            end_char = infix[i+1]
+            new_symbol = start_char+"-"+end_char
+            preprocessed_infix += new_symbol
+            preprocessed_infix += '|'
+        else:
+            preprocessed_infix += char
+    return preprocessed_infix
+
 #[d|e|f|g|h|iD|E|F|G|H|I]
 def add_ors(infix: str):
     preprocessed_infix = infix
@@ -65,11 +78,12 @@ def preprocessing(infix:str):
     if not validate(infix):
         print('Invalid regex')
         return
-    
     infix = infix.replace(' ', '')
     infix = replace_dot(infix)
-    infix = handle_ranges(infix)
+    # infix = handle_ranges(infix)
+    
     infix = add_ors(infix)
+    print(infix)
     infix = add_concatenation(infix)
     
     return infix
@@ -80,7 +94,7 @@ def shunting_yard(infix:str):
     postfix = []
     precedence = {'*': 5, '+': 4, '?': 3,'.':2, '|': 1, '(': 0 , ')': 0, '[': 0, ']': 0}
     operators = '*+?|.'
-    for char in infix:
+    for i,char in enumerate(infix):        
         if char == '(' or char == '[':
             temp_stack.append(char)
         elif char == ')':
@@ -94,9 +108,16 @@ def shunting_yard(infix:str):
         elif char in operators: 
             while len(temp_stack) !=0 and precedence[temp_stack[-1]] >= precedence[char]:
                 postfix.append(temp_stack.pop())
-            temp_stack.append(char)
-        elif char in alphanumerics:
+            temp_stack.append(char) 
+        elif char in alphanumerics and i == 0 or i == len(infix) - 1: 
             postfix.append(char)
+        elif char in alphanumerics and infix[i+1] != '-' and infix[i-1] != '-':
+            postfix.append(char)
+        elif char == '-':
+            start_char = infix[i-1]
+            end_char = infix[i+1]
+            new_symbol = start_char+"-"+end_char
+            postfix.append(new_symbol)
         
     while len(temp_stack) != 0:
         postfix.append(temp_stack.pop())
@@ -109,7 +130,8 @@ def infix2postfix(infix:str):
     postfix = shunting_yard(infix)
     return postfix
 
-# print(infix2postfix('[a-f0-9]32'))
+print(infix2postfix('a *b+ [a-z](c?)'))
+print(infix2postfix('a *b+ [x](c?)'))
 # print(infix2postfix('(A+B*)?(C|D)'))
 # print(infix2postfix('(02)+|CD'))
 # print(infix2postfix('[a-fA-C]'))

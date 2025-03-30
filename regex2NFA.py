@@ -28,7 +28,7 @@ class NFA:
         stack = []
         state_counter= 1
 
-        for char in postfix:
+        for i,char in enumerate(postfix):
             if char=='.':
                 nfa2 = stack.pop()
                 nfa1 = stack.pop()
@@ -130,7 +130,7 @@ class NFA:
                 zero_or_one_nfa.states = [new_start, new_accept] + nfa.states
                 stack.append(zero_or_one_nfa)
 
-            elif char in alphanumerics:
+            elif char in alphanumerics and i == 0 or i == len(postfix) - 1: 
                 start_state = State('S' + str(state_counter))
                 accept_state = State('S' +  str(state_counter +1))
                 state_counter += 2
@@ -141,6 +141,38 @@ class NFA:
                 accept_state.in_edges.append(edge)
 
                 single_char_nfa = NFA(char, start_state, accept_state)
+                single_char_nfa.states.extend([start_state,accept_state])
+
+                stack.append(single_char_nfa)
+            elif char in alphanumerics and postfix[i+1] != '-' and postfix[i-1] != '-':
+                start_state = State('S' + str(state_counter))
+                accept_state = State('S' +  str(state_counter +1))
+                state_counter += 2
+
+                edge = Edge(char,accept_state)
+
+                start_state.out_edges.append(edge)
+                accept_state.in_edges.append(edge)
+
+                single_char_nfa = NFA(char, start_state, accept_state)
+                single_char_nfa.states.extend([start_state,accept_state])
+
+                stack.append(single_char_nfa)
+                
+            elif char =='-':
+                start_char = postfix[i-1]
+                end_char = postfix[i+1]
+                new_symbol = start_char+"-"+end_char
+                start_state = State('S' + str(state_counter))
+                accept_state = State('S' +  str(state_counter +1))
+                state_counter += 2
+
+                edge = Edge(new_symbol,accept_state)
+
+                start_state.out_edges.append(edge)
+                accept_state.in_edges.append(edge)
+
+                single_char_nfa = NFA(new_symbol, start_state, accept_state)
                 single_char_nfa.states.extend([start_state,accept_state])
 
                 stack.append(single_char_nfa)
