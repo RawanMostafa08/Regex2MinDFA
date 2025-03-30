@@ -1,0 +1,40 @@
+{
+    "S0": {
+        "isTerminatingState": false,
+        "A-E": "S1",
+        "a-c": "S1",
+        "2": "S2"
+    },
+    "S1": {
+        "isTerminatingState": false,
+        "A-E": "S1",
+        "a-c": "S1",
+        "1": "S7"
+    },
+    "S2": {
+        "isTerminatingState": false,
+        "0-9": "S2",
+        "A-C": "S3",
+        "K": "S4"
+    },
+    "S3": {
+        "isTerminatingState": false,
+        "A": "S5"
+    },
+    "S4": {
+        "isTerminatingState": false,
+        "A-C": "S3"
+    },
+    "S5": {
+        "isTerminatingState": false,
+        "B": "S6"
+    },
+    "S6": {
+        "isTerminatingState": false,
+        "C": "S7"
+    },
+    "S7": {
+        "isTerminatingState": true
+    },
+    "startingState": "S0"
+}
